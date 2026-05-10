@@ -1,0 +1,30 @@
+package com.kuit.baemin.dto.response;
+
+import com.kuit.baemin.domain.order.Order;
+import com.kuit.baemin.domain.order.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderRes {
+  private Long id;
+  private String restaurantName;
+  private Integer totalPrice;
+  private OrderStatus status;
+  private LocalDateTime createdAt;
+
+  public static OrderRes from(Order order) {
+    return new OrderRes(
+        order.getId(),
+        order.getRestaurant().getName(),
+        order.getTotalPrice(),
+        order.getStatus(),
+        order.getCreatedAt()
+    );
+  }
+}
