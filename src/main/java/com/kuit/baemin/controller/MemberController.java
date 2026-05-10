@@ -1,7 +1,6 @@
 package com.kuit.baemin.controller;
 
 import com.kuit.baemin.common.dto.ApiResponse;
-import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
 import com.kuit.baemin.dto.response.MemberRes;
 import com.kuit.baemin.service.MemberService;
@@ -36,25 +35,11 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    /**
-     * POST /members — 회원 가입
-     */
     @PostMapping
     public ApiResponse<Long> signUp(@Valid @RequestBody SignUpReq req) {
         return ApiResponse.of(memberService.signUp(req));
     }
 
-    /**
-     * POST /members/login — 로그인
-     */
-    @PostMapping("/login")
-    public ApiResponse<Long> login(@Valid @RequestBody LoginReq req) {
-        return ApiResponse.of(memberService.login(req));
-    }
-
-    /**
-     * GET /members/{memberId} — 회원 단건 조회
-     */
     @GetMapping("/{memberId}")
     public ApiResponse<MemberRes> getMember(@PathVariable Long memberId) {
         return ApiResponse.of(memberService.getMember(memberId));
