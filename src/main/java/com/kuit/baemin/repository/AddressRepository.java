@@ -1,6 +1,6 @@
 package com.kuit.baemin.repository;
 
-import com.kuit.baemin.domain.address.Address;
+import com.kuit.baemin.domain.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.kuit.baemin.dto.response;
 
-import com.kuit.baemin.domain.address.Address;
+import com.kuit.baemin.domain.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ public class AddressRes {
   public static AddressRes from(Address address) {
     return new AddressRes(
         address.getId(),
-        address.getAddress(),
+        address.getMainAddress(),
         address.getDetailAddress(),
         address.getIsDefault()
     );

@@ -1,10 +1,7 @@
 package com.kuit.baemin.service;
 
-import static com.kuit.baemin.exception.errorcode.ErrorStatus.INVALID_PASSWORD;
-import static com.kuit.baemin.exception.errorcode.ErrorStatus.MEMBER_NOT_FOUND;
-
-import com.kuit.baemin.domain.member.Member;
-import com.kuit.baemin.domain.member.MemberStatus;
+import com.kuit.baemin.domain.Member.Member;
+import com.kuit.baemin.domain.Member.MemberStatus;
 import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
 import com.kuit.baemin.dto.response.MemberRes;
@@ -15,57 +12,53 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
+import static com.kuit.baemin.exception.errorcode.ErrorStatus.INVALID_PASSWORD;
+import static com.kuit.baemin.exception.errorcode.ErrorStatus.MEMBER_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+  private final MemberRepository memberRepository;
 
-    /**
-     * 회원 가입
-     */
-    @Transactional
-    public Long signUp(SignUpReq req) {
-        // 이메일 중복 확인
-        if (memberRepository.existsByEmail(req.getEmail())) {
-            throw new MemberException(ErrorStatus.DUPLICATE_EMAIL);
-        }
-
-        Member member = Member.builder()
-                .email(req.getEmail())
-                .password(req.getPassword())
-                .phoneNumber(req.getPhoneNumber())
-                .nickname(req.getNickname())
-                .status(MemberStatus.ACTIVE)
-                .build();
-
-
-        Member saved = memberRepository.save(member);
-        return saved.getId();
+  @Transactional
+  public Long signUp(SignUpReq req) {
+    if (memberRepository.existsByEmail(req.getEmail())) {
+      throw new MemberException(ErrorStatus.DUPLICATE_EMAIL);
     }
 
-    /**
-     * 로그인
-     */
-    public Long login(LoginReq req) {
-        Member member = memberRepository
-                .findByEmailAndStatus(req.getEmail(), MemberStatus.ACTIVE)
-                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+    LocalDateTime now = LocalDateTime.now();
+    Member member = new Member();
+    member.setEmail(req.getEmail());
+    member.setPassword(req.getPassword());
+    member.setPhoneNumber(req.getPhoneNumber());
+    member.setNickname(req.getNickname());
+    member.setStatus(MemberStatus.ACTIVE.toString());
+    member.setCreatedAt(now);
+    member.setUpdatedAt(now);
 
-        if (!member.getPassword().equals(req.getPassword())) {
-            throw new MemberException(INVALID_PASSWORD);
-        }
+    Member saved = memberRepository.save(member);
+    return saved.getId();
+  }
 
-        return member.getId();
+  public Long login(LoginReq req) {
+    Member member = memberRepository
+      .findByEmailAndStatus(req.getEmail(), MemberStatus.ACTIVE)
+      .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+
+    if (!member.getPassword().equals(req.getPassword())) {
+      throw new MemberException(INVALID_PASSWORD);
     }
 
-    /**
-     * 회원 단건 조회
-     */
-    public MemberRes getMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
-        return MemberRes.from(member);
-    }
+    return member.getId();
+  }
+
+  public MemberRes getMember(Long memberId) {
+    Member member = memberRepository.findById(memberId)
+      .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+    return MemberRes.from(member);
+  }
 }

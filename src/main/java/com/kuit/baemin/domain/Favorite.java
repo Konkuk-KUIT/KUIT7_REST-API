@@ -1,26 +1,32 @@
 package com.kuit.baemin.domain;
 
-import com.kuit.baemin.domain.member.Member;
+import com.kuit.baemin.domain.Member.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "favorite")
 public class Favorite {
     @EmbeddedId
-    private FavoriteId id;
+    private Long id;
 
-    @MapsId("userId2")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id2", nullable = false)
-    private Member userId2;
+    @JoinColumn(name = "user_id", nullable = false)
+    private Member userId;
 
     @MapsId("storeId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -1,6 +1,6 @@
 package com.kuit.baemin.repository;
 
-import com.kuit.baemin.domain.favorite.Favorite;
+import com.kuit.baemin.domain.Favorite;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FavoriteReq {
   @NotNull(message = "가게 ID는 필수입니다.")
-  private Long restaurantId;
+  private Long storeId;
 }

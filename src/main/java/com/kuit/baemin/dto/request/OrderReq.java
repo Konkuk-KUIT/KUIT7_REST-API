@@ -11,9 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderReq {
   @NotNull(message = "가게 ID는 필수입니다.")
-  private Long restaurantId;
+  private Long storeId;
+
+  private String request;
+
+  private String receiveWay;
 
   @NotNull(message = "총 가격은 필수입니다.")
   @Min(value = 0, message = "가격은 0 이상이어야 합니다.")
   private Integer totalPrice;
+
+  private Integer estimateTime;
 }

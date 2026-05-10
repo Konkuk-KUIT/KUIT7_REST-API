@@ -10,11 +10,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressReq {
-  @NotBlank(message = "주소는 필수입니다.")
-  private String address;
+  @NotBlank(message = "우편번호는 필수입니다.")
+  private String zipcode;
+
+  @NotBlank(message = "기본 주소는 필수입니다.")
+  private String mainAddress;
 
   private String detailAddress;
 
+  private String nickname;
+
   @NotNull(message = "기본 배달지 설정은 필수입니다.")
   private Boolean isDefault;
+
+  private String entrancePassword;
+
+  private String descriptionAddress;
 }

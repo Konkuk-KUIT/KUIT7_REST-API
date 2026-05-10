@@ -1,6 +1,6 @@
 package com.kuit.baemin.dto.response;
 
-import com.kuit.baemin.domain.favorite.Favorite;
+import com.kuit.baemin.domain.Favorite;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +16,8 @@ public class FavoriteRes {
   public static FavoriteRes from(Favorite favorite) {
     return new FavoriteRes(
         favorite.getId(),
-        favorite.getRestaurant().getId(),
-        favorite.getRestaurant().getName()
+        favorite.getStore().getId(),
+        favorite.getStore().getName()
     );
   }
 }
