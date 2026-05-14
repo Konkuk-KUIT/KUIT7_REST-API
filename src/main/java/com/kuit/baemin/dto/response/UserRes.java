@@ -15,7 +15,6 @@ public class UserRes {
     private String name;
     private String email;
     private String phoneNumber;
-    private String password;
 
     public static UserRes from(User user) {
         return UserRes.builder()
