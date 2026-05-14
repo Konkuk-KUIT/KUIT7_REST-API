@@ -1,7 +1,7 @@
 package com.kuit.baemin.dto.request;
 
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
