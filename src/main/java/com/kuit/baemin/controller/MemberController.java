@@ -1,12 +1,17 @@
 package com.kuit.baemin.controller;
 
 import com.kuit.baemin.common.dto.ApiResponse;
+import com.kuit.baemin.dto.request.AddressCreateReq;
 import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
+import com.kuit.baemin.dto.response.AddressRes;
 import com.kuit.baemin.dto.response.MemberRes;
 import com.kuit.baemin.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -32,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
+@Validated
 public class MemberController {
 
     private final MemberService memberService;
@@ -56,7 +62,16 @@ public class MemberController {
      * GET /members/{memberId} — 회원 단건 조회
      */
     @GetMapping("/{memberId}")
-    public ApiResponse<MemberRes> getMember(@PathVariable Long memberId) {
+    public ApiResponse<MemberRes> getMember(@PathVariable @Positive Long memberId) {
         return ApiResponse.of(memberService.getMember(memberId));
+    }
+
+    @Operation(summary = "배달 주소 등록", description = "회원의 배달 주소를 등록한다")
+    @PostMapping("/{memberId}/addresses")
+    public ApiResponse<AddressRes> createAddress(
+            @PathVariable @Positive Long memberId,
+            @Valid @RequestBody AddressCreateReq req
+    ) {
+        return ApiResponse.of(memberService.createAddress(memberId, req));
     }
 }
