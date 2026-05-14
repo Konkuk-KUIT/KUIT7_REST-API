@@ -27,9 +27,4 @@ public class RestaurantService {
                 .map(RestaurantRes::from)
                 .toList();
     }
-
-    /**
-     * 메뉴 목록
-     */
-
 }

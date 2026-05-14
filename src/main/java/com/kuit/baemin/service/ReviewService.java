@@ -47,7 +47,7 @@ public class ReviewService {
         if (!order.getUser()
                 .getId()
                 .equals(req.getUserId())) {
-            throw new ReviewException(REVIEW_NOT_OWNER);
+            throw new OrderException(ORDER_NOT_OWNER);
         }
 
         // 주문한 식당과 리뷰 식당이 일치하는지 검증
@@ -62,8 +62,7 @@ public class ReviewService {
                 .rating(req.getRating())
                 .status(ReviewStatus.ACTIVE)
                 .user(user)
-                .restaurant(restaurantRepository.findById(req.getRestaurantId())
-                        .orElseThrow(() -> new RestaurantException(RESTAURANT_NOT_FOUND)))
+                .restaurant(order.getRestaurant())
                 .order(order)
                 .build();
 

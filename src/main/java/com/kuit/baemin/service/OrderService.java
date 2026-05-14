@@ -16,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.kuit.baemin.exception.errorcode.ErrorStatus.*;
 
 @Service
@@ -77,6 +80,7 @@ public class OrderService {
         Order saved =  orderRepository.save(order);
 
         // 주문 메뉴 저장
+        List<OrderMenu> orderMenus = new ArrayList<>();
         for (OrderMenuReq menuReq : req.getMenus()) {
             Menu menu = menuRepository.findById(menuReq.getMenuId())
                     .orElseThrow(() -> new MenuException(MENU_NOT_FOUND));
@@ -96,8 +100,10 @@ public class OrderService {
                     .status(OrderMenuStatus.ACTIVE)
                     .build();
 
-            orderMenuRepository.save(orderMenu);
+            // 배치 저장
+            orderMenus.add(orderMenu);
         }
+        orderMenuRepository.saveAll(orderMenus);
 
         return saved.getId();
     }

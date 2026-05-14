@@ -1,5 +1,6 @@
 package com.kuit.baemin.dto.request;
 
+import jakarta.validation.Valid;
 import lombok.Getter;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,5 +19,6 @@ public class OrderReq {
     private Long addressId;
 
     @NotNull
+    @Valid
     private List<OrderMenuReq> menus;
 }

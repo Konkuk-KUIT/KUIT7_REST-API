@@ -94,7 +94,7 @@ public class UserService {
 
         if (req.getEmail() != null) {
             // 이메일 중복 확인
-            if (userRepository.existsByEmail(req.getEmail())) {
+            if (userRepository.existsByEmailAndIdNot(req.getEmail(), userId)) {
                 throw new UserException(DUPLICATE_EMAIL);
             }
             user.updateEmail(req.getEmail());
