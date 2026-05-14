@@ -23,6 +23,7 @@ import java.time.Instant;
 public class Address {
     @Id
     @Column(name = "address_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

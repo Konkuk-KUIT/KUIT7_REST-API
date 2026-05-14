@@ -21,6 +21,7 @@ import java.time.Instant;
 @Table(name = "favorite")
 public class Favorite {
     @EmbeddedId
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @MapsId("userId")
