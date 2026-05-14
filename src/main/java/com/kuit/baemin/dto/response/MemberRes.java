@@ -1,6 +1,6 @@
 package com.kuit.baemin.dto.response;
 
-import com.kuit.baemin.domain.Member.Member;
+import com.kuit.baemin.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 

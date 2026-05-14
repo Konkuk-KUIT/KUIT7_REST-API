@@ -1,7 +1,7 @@
 package com.kuit.baemin.service;
 
-import com.kuit.baemin.domain.Member.Member;
-import com.kuit.baemin.domain.Member.MemberStatus;
+import com.kuit.baemin.domain.Member;
+import com.kuit.baemin.domain.MemberStatus;
 import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
 import com.kuit.baemin.dto.response.MemberRes;

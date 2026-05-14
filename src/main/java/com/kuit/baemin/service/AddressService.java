@@ -1,7 +1,7 @@
 package com.kuit.baemin.service;
 
 import com.kuit.baemin.domain.Address;
-import com.kuit.baemin.domain.Member.Member;
+import com.kuit.baemin.domain.Member;
 import com.kuit.baemin.dto.request.AddressReq;
 import com.kuit.baemin.dto.response.AddressRes;
 import com.kuit.baemin.exception.AddressException;

@@ -1,6 +1,6 @@
 package com.kuit.baemin.service;
 
-import com.kuit.baemin.domain.Member.Member;
+import com.kuit.baemin.domain.Member;
 import com.kuit.baemin.domain.Order;
 import com.kuit.baemin.domain.Store;
 import com.kuit.baemin.dto.request.OrderReq;
