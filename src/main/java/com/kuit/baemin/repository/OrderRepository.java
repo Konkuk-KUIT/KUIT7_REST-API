@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
   // 회원 ID로 주문 조회
-  List<Order> findByMemberId(Long memberId);
+  List<Order> findByUserId(Long userId);
 
   // 주문 ID와 회원 ID로 조회
-  Optional<Order> findByIdAndMemberId(Long id, Long memberId);
+  Optional<Order> findByIdAndUserId(Long id, Long userId);
 }

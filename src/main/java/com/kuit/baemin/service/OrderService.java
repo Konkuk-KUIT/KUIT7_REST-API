@@ -33,7 +33,7 @@ public class OrderService {
     memberRepository.findById(memberId)
       .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
-    return orderRepository.findByMemberId(memberId)
+    return orderRepository.findByUserId(memberId)
       .stream()
       .map(OrderRes::from)
       .toList();
@@ -64,7 +64,7 @@ public class OrderService {
   }
 
   public OrderRes getOrder(Long memberId, Long orderId) {
-    Order order = orderRepository.findByIdAndMemberId(orderId, memberId)
+    Order order = orderRepository.findByIdAndUserId(orderId, memberId)
       .orElseThrow(() -> new OrderException(ORDER_NOT_FOUND));
     return OrderRes.from(order);
   }

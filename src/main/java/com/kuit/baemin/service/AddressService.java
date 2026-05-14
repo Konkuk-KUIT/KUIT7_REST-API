@@ -30,7 +30,7 @@ public class AddressService {
     memberRepository.findById(memberId)
       .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
-    return addressRepository.findByMemberId(memberId)
+    return addressRepository.findByUserId(memberId)
       .stream()
       .map(AddressRes::from)
       .toList();
@@ -42,7 +42,7 @@ public class AddressService {
       .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
     if (req.getIsDefault()) {
-      addressRepository.findByMemberId(memberId)
+      addressRepository.findByUserId(memberId)
         .forEach(addr -> {
           addr.setIsDefault(false);
           addr.setUpdatedAt(Instant.now());
@@ -69,11 +69,11 @@ public class AddressService {
 
   @Transactional
   public void updateAddress(Long memberId, Long addressId, AddressReq req) {
-    Address address = addressRepository.findByIdAndMemberId(addressId, memberId)
+    Address address = addressRepository.findByIdAndUserId(addressId, memberId)
       .orElseThrow(() -> new AddressException(ADDRESS_NOT_FOUND));
 
     if (req.getIsDefault()) {
-      addressRepository.findByMemberId(memberId)
+      addressRepository.findByUserId(memberId)
         .forEach(addr -> {
           if (!addr.getId().equals(addressId)) {
             addr.setIsDefault(false);
@@ -97,7 +97,7 @@ public class AddressService {
 
   @Transactional
   public void deleteAddress(Long memberId, Long addressId) {
-    Address address = addressRepository.findByIdAndMemberId(addressId, memberId)
+    Address address = addressRepository.findByIdAndUserId(addressId, memberId)
       .orElseThrow(() -> new AddressException(ADDRESS_NOT_FOUND));
 
     address.setStatus("DELETED");

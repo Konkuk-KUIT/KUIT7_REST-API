@@ -33,7 +33,7 @@ public class FavoriteService {
     memberRepository.findById(memberId)
       .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
-    return favoriteRepository.findByMemberId(memberId)
+    return favoriteRepository.findByUserId(memberId)
       .stream()
       .map(FavoriteRes::from)
       .toList();
@@ -47,7 +47,7 @@ public class FavoriteService {
     Store store = storeRepository.findById(req.getStoreId())
       .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
 
-    boolean exists = favoriteRepository.findByMemberId(memberId)
+    boolean exists = favoriteRepository.findByUserId(memberId)
       .stream()
       .anyMatch(fav -> fav.getStore().getId().equals(req.getStoreId()));
 
@@ -71,7 +71,7 @@ public class FavoriteService {
     Member member = memberRepository.findById(memberId)
       .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
-    Favorite favorite = favoriteRepository.findByMemberId(memberId)
+    Favorite favorite = favoriteRepository.findByUserId(memberId)
       .stream()
       .filter(fav -> fav.getStore().getId().equals(storeId))
       .findFirst()

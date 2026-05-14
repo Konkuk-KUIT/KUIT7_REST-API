@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
   // 회원 ID로 주소 조회
-  List<Address> findByMemberId(Long memberId);
+  List<Address> findByUserId(Long userId);
 
   // 주소 ID와 회원 ID로 조회
-  Optional<Address> findByIdAndMemberId(Long id, Long memberId);
+  Optional<Address> findByIdAndUserId(Long id, Long userId);
 }
