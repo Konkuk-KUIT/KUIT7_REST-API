@@ -11,21 +11,20 @@ import java.time.LocalDateTime;
 @Builder
 public class MemberRes {
 
-    private Long id;
+    private Long userId; // 프론트엔드 반환 시 명확하도록 id -> userId로 변경
     private String email;
     private String phoneNumber;
-    private String nickname;
-    private String profileImage;
+    private String userName;
+    private Long userPoint; // 포인트 조회 추가
     private LocalDateTime createdAt;
 
     // 엔티티 → DTO 변환
     public static MemberRes from(Member member) {
         return MemberRes.builder()
-                .id(member.getId())
+                .userId(member.getId())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
-                .nickname(member.getNickname())
-                .profileImage(member.getProfileImage())
+                .userName(member.getUserName())
                 .createdAt(member.getCreatedAt())
                 .build();
     }

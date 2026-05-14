@@ -19,8 +19,23 @@ public enum ErrorStatus {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER404", "존재하지 않는 회원입니다."),
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "MEMBER409", "이미 사용 중인 이메일입니다."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "MEMBER401", "비밀번호가 일치하지 않습니다."),
+    DUPLICATE_PHONE_NUMBER(HttpStatus.CONFLICT, "MEMBER409", "이미 가입된 전화번호입니다"),
+    ALREADY_DELETED_MEMBER(HttpStatus.CONFLICT, "MEMBER409", "이미 삭제된 회원입니다"),
 
     // ── TODO: 미션에서 필요한 에러 코드 추가 ──
+    // --가게--
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND,"STORE404","존재하지 않는 가게입니다"),
+
+    // -- menu --
+    MENU_NOT_FOUND(HttpStatus.NOT_FOUND,"MENU404","존재하지 않는 메뉴입니다"),
+
+    // -- order --
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND,"ORDER404","존재하지 않는 주문입니다"),
+
+    // --coupon--
+    COUPON_NOT_FOUND(HttpStatus.NOT_FOUND,"COUPON404","존재하지 않는 쿠폰입니다"),
+    COUPON_ALREADY_ISSUED(HttpStatus.CONFLICT,"COUPON409","이미 발행된 쿠폰입니다")
+
     ;
 
     private final HttpStatus httpStatus;

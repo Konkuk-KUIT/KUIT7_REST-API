@@ -1,13 +1,18 @@
 package com.kuit.baemin.controller;
 
 import com.kuit.baemin.common.dto.ApiResponse;
-import com.kuit.baemin.dto.request.LoginReq;
-import com.kuit.baemin.dto.request.SignUpReq;
-import com.kuit.baemin.dto.response.MemberRes;
+import com.kuit.baemin.dto.request.*;
+import com.kuit.baemin.dto.response.*;
+import com.kuit.baemin.service.AddressService;
+import com.kuit.baemin.service.CouponService;
+import com.kuit.baemin.service.FavoriteService;
 import com.kuit.baemin.service.MemberService;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * TODO: 인증/인가 처리 미구현 (8주차에서 다룰 예정)
@@ -35,6 +40,9 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final FavoriteService favoriteService;
+    private final AddressService addressService;
+    private final CouponService couponService;
 
     /**
      * POST /members — 회원 가입
@@ -59,4 +67,38 @@ public class MemberController {
     public ApiResponse<MemberRes> getMember(@PathVariable Long memberId) {
         return ApiResponse.of(memberService.getMember(memberId));
     }
+
+    @GetMapping("/{memberId}/favorite")
+    public ApiResponse<List<FavoriteStoreRes>> getFavoriteStore(@PathVariable Long memberId){
+        return ApiResponse.of(favoriteService.getFavoriteStore(memberId));
+    }
+
+
+    @PatchMapping("/{memberId}")
+    public ApiResponse<Long> updateMember(@PathVariable Long memberId ,@Valid @RequestBody MemberUpdateReq req){
+        return ApiResponse.of(memberService.updateMember(memberId , req));
+    }
+
+    @DeleteMapping("/{memberId}")
+    public ApiResponse<DeleteMemberRes> deleteMember(@PathVariable Long memberId){
+        return ApiResponse.of(memberService.deleteMember(memberId));
+    }
+
+    @PostMapping("{memberId}/address")
+    public ApiResponse<AddressRes> addAddress(@PathVariable Long memberId,
+                                              @Valid @RequestBody AddressReq req){
+        return ApiResponse.of(addressService.addAddress(memberId,req));
+    }
+
+    @PostMapping("/{memberId}/coupon")
+    public ApiResponse<UserCouponRes> issueCoupon(@PathVariable Long memberId,
+                                                  @Valid @RequestBody UserCouponReq req){
+
+        return ApiResponse.of(couponService.issueCoupon(memberId , req));
+    }
+
+
+
+
+
 }
