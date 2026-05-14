@@ -4,8 +4,7 @@ import com.kuit.baemin.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 // TODO: 본인이 설계한 ERD에 맞게 수정
 @Entity
@@ -20,11 +19,29 @@ public class Restaurant extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 50)
     private String address;
+
+    @Column(nullable = false, length = 50)
+    private String addressDetail;
+
+    @Column(nullable = false, precision = 10, scale = 7)
+    private BigDecimal latitude;
+
+    @Column(nullable = false, precision = 10, scale = 7)
+    private BigDecimal longitude;
+
+    @Column(nullable = false, length = 20)
+    private String phoneNumber;
+
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal minOrderPrice;
+
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal deliveryFee;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
