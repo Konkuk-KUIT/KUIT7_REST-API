@@ -6,6 +6,7 @@ import com.kuit.baemin.domain.Order.Order;
 import com.kuit.baemin.domain.Order.OrderStatus;
 import com.kuit.baemin.domain.OrderMenu.OrderMenu;
 import com.kuit.baemin.domain.OrderMenu.OrderMenuStatus;
+import com.kuit.baemin.domain.User.User;
 import com.kuit.baemin.dto.request.OrderMenuReq;
 import com.kuit.baemin.dto.request.OrderReq;
 import com.kuit.baemin.dto.response.OrderRes;
@@ -51,7 +52,12 @@ public class OrderService {
     @Transactional
     public Long createOrder(OrderReq req) {
 
-        // 사용자의 주소인지 검증
+        // 검증 순서 : user -> address -> restaurant -> menu 순
+        // 1. 존재하는 회원의 주문 요청인지 검증
+        User user = userRepository.findById(req.getUserId())
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+
+        // 2. 사용자의 주소인지 검증
         Address address = addressRepository.findById(req.getAddressId())
                 .orElseThrow(() -> new AddressException(ADDRESS_NOT_FOUND));
         if (!address.getUser()
@@ -62,8 +68,7 @@ public class OrderService {
 
         Order order = Order.builder()
                 .status(OrderStatus.PENDING)
-                .user(userRepository.findById(req.getUserId())
-                        .orElseThrow(() -> new UserException(USER_NOT_FOUND)))
+                .user(user)
                 .restaurant((restaurantRepository.findById(req.getRestaurantId()))
                         .orElseThrow(() -> new RestaurantException(RESTAURANT_NOT_FOUND)))
                 .address(address)

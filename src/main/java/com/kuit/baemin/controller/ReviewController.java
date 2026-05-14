@@ -17,7 +17,7 @@
         private final ReviewService reviewService;
 
         /**
-         * POST /orders/{id}/reviews - 리뷰 작성
+         * POST /orders/{orderId}/reviews - 리뷰 작성
          */
         @PostMapping
         @Operation(summary = "리뷰 작성")
@@ -27,7 +27,7 @@
         }
 
         /**
-         * DELETE /orders/{id}/reviews/{reviewId} - 리뷰 삭제
+         * DELETE /orders/{orderId}/reviews/{reviewId} - 리뷰 삭제
          */
         @DeleteMapping("/{reviewId}")
         @Operation(summary = "리뷰 삭제")

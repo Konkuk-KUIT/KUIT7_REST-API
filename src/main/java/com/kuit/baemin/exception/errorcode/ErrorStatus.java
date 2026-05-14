@@ -37,10 +37,12 @@ public enum ErrorStatus {
     MENU_RESTAURANT_MISMATCH(HttpStatus.FORBIDDEN, "MENU403", "해당 식당의 메뉴가 아닙니다."),
 
     // ── 리뷰 ──
-    REVIEW_ORDER_MISMATCH(HttpStatus.BAD_REQUEST, "REVIEW400", "본인이 작성한 리뷰가 아닙니다."),
-    REVIEW_NOT_OWNER(HttpStatus.FORBIDDEN, "REVIEW403_1", "해당 주문에 속한 리뷰가 아닙니다."),
+    REVIEW_ORDER_MISMATCH(HttpStatus.BAD_REQUEST, "REVIEW400", "해당 주문에 속한 리뷰가 아닙니다."),
+    REVIEW_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "REVIEW400_2", "이미 삭제된 리뷰입니다."),
+    REVIEW_NOT_OWNER(HttpStatus.FORBIDDEN, "REVIEW403_1", "본인이 작성한 리뷰가 아닙니다."),
     REVIEW_RESTAURANT_MISMATCH(HttpStatus.FORBIDDEN, "REVIEW403_2", "주문한 식당과 일치하지 않는 식당입니다."),
-    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW404", "존재하지 않는 리뷰입니다."),
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW404", "존재하지 않는 리뷰입니다.")
+
     ;
 
     private final HttpStatus httpStatus;

@@ -3,6 +3,7 @@ package com.kuit.baemin.service;
 import com.kuit.baemin.domain.Order.Order;
 import com.kuit.baemin.domain.Review.Review;
 import com.kuit.baemin.domain.Review.ReviewStatus;
+import com.kuit.baemin.domain.User.User;
 import com.kuit.baemin.dto.request.ReviewReq;
 import com.kuit.baemin.exception.OrderException;
 import com.kuit.baemin.exception.RestaurantException;
@@ -35,10 +36,14 @@ public class ReviewService {
     @Transactional
     public Long save(ReviewReq req, Long orderId) {
 
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderException(ORDER_NOT_FOUND));
+        // 검증 순서: user -> order -> restaurant 순
+        // 존재하는 회원인지 검증
+        User user = userRepository.findById(req.getUserId())
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
 
         // 본인의 주문인지 검증
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderException(ORDER_NOT_FOUND));
         if (!order.getUser()
                 .getId()
                 .equals(req.getUserId())) {
@@ -56,8 +61,7 @@ public class ReviewService {
                 .content(req.getContent())
                 .rating(req.getRating())
                 .status(ReviewStatus.ACTIVE)
-                .user(userRepository.findById(req.getUserId())
-                        .orElseThrow(() -> new UserException(USER_NOT_FOUND)))
+                .user(user)
                 .restaurant(restaurantRepository.findById(req.getRestaurantId())
                         .orElseThrow(() -> new RestaurantException(RESTAURANT_NOT_FOUND)))
                 .order(order)
@@ -73,8 +77,23 @@ public class ReviewService {
     @Transactional
     public void delete(Long reviewId, Long orderId, Long userId) {
 
+        // 검증 순서: user -> review -> 본인 리뷰 -> 주문 일치 순
+        // 존재하는 회원인지 검증
+        userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewException(REVIEW_NOT_FOUND));
+
+        // 이미 삭제된 리뷰인지 검증
+        if(review.getStatus() == ReviewStatus.INACTIVE) {
+            throw new ReviewException(REVIEW_ALREADY_DELETED);
+        }
+
+        // 존재하는 주문인지 검증
+        if (!orderRepository.existsById(orderId)) {
+            throw new OrderException(ORDER_NOT_FOUND);
+        }
 
         // 해당 리뷰가 본인이 쓴 것인지 검증
         if (!review.getUser()

@@ -17,7 +17,7 @@ public class OrderController {
     private final OrderService orderService;
 
     /**
-     * GET /orders/{id} - 주문 상세 조회
+     * GET /orders/{orderId} - 주문 상세 조회
      */
     @GetMapping("/{orderId}")
     @Operation(summary = "주문 상세 조회")

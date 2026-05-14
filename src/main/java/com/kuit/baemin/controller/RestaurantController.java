@@ -34,7 +34,7 @@ public class RestaurantController {
     }
 
     /**
-     * GET /restaurants/{id}/menus - 식당 메뉴 목록 조회
+     * GET /restaurants/{restaurantId}/menus - 식당 메뉴 목록 조회
      */
     @GetMapping("/{restaurantId}/menus")
     @Operation(summary = "식당 메뉴 목록 조회")
