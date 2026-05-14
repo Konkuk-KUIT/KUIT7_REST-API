@@ -1,7 +1,6 @@
 package com.kuit.baemin.dto.response;
 
 import com.kuit.baemin.domain.member.Member;
-import com.kuit.baemin.domain.member.MemberStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,9 +12,7 @@ public class MemberRes {
 
     private Long id;
     private String email;
-    private String phoneNumber;
-    private String nickname;
-    private String profileImage;
+    private String name;
     private LocalDateTime createdAt;
 
     // 엔티티 → DTO 변환
@@ -23,9 +20,7 @@ public class MemberRes {
         return MemberRes.builder()
                 .id(member.getId())
                 .email(member.getEmail())
-                .phoneNumber(member.getPhoneNumber())
-                .nickname(member.getNickname())
-                .profileImage(member.getProfileImage())
+                .name(member.getName())
                 .createdAt(member.getCreatedAt())
                 .build();
     }

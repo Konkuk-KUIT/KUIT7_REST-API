@@ -35,8 +35,7 @@ public class MemberService {
         Member member = Member.builder()
                 .email(req.getEmail())
                 .password(req.getPassword())
-                .phoneNumber(req.getPhoneNumber())
-                .nickname(req.getNickname())
+                .name(req.getName())
                 .status(MemberStatus.ACTIVE)
                 .build();
 

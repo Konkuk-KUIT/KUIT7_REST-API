@@ -1,6 +1,9 @@
 package com.kuit.baemin.domain.Restaurant;
 
 import com.kuit.baemin.domain.BaseEntity;
+import com.kuit.baemin.domain.menu.Menu;
+import com.kuit.baemin.domain.order.Order;
+import com.kuit.baemin.domain.review.Review;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,11 +26,26 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(nullable = false)
+    private int minOrderPrice;
+
     @Column(nullable = false, length = 200)
     private String address;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
     private RestaurantStatus status;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "restaurant")
+    private List<Review> reviews = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "restaurant")
+    private List<Order> orders = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "restaurant")
+    private List<Menu> menus = new ArrayList<>();
 
 }
