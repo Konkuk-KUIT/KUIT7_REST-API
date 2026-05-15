@@ -23,8 +23,20 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(nullable = false, length = 50)
+    private String category;
+
     @Column(nullable = false, length = 200)
     private String address;
+
+    @Column(nullable = false)
+    private Double latitude;
+
+    @Column(nullable = false)
+    private Double longitude;
+
+    @Column(nullable = false)
+    private Integer minOrderPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
