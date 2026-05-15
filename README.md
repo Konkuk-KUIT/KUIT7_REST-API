@@ -8,7 +8,7 @@
 spring:
   datasource:
     url: ${DATASOURCE_URL_LOCAL}      # jdbc:mysql://localhost:3306/{생성한 DB 이름}
-    username: ${DATASOURCE_USERNAME}  # 본인 DB username
+    name: ${DATASOURCE_NAME}  # 본인 DB name
     password: ${DATASOURCE_PASSWORD}  # 본인 DB 비밀번호
     driver-class-name: com.mysql.cj.jdbc.Driver
 ```

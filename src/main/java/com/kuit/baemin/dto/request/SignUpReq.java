@@ -22,5 +22,6 @@ public class SignUpReq {
     private String phoneNumber;
 
     @Size(max = 25, message = "닉네임은 25자 이하여야 합니다.")
-    private String nickname;
+    private String userName;
+
 }
