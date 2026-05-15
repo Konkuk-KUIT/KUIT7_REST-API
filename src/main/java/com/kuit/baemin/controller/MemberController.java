@@ -5,9 +5,13 @@ import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
 import com.kuit.baemin.dto.response.MemberRes;
 import com.kuit.baemin.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 
 /**
  * TODO: 인증/인가 처리 미구현 (8주차에서 다룰 예정)
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
  *
  *  8주차 커리큘럼(인증, 인가, JWT)을 학습한 후 직접 추가해보세요!
  */
+@Tag(name = "Member", description = "회원 관련 API")
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
@@ -36,27 +41,33 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    /**
-     * POST /members — 회원 가입
-     */
+    @Operation(summary = "회원 가입")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 가입 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "이메일 중복")
+    })
     @PostMapping
     public ApiResponse<Long> signUp(@Valid @RequestBody SignUpReq req) {
         return ApiResponse.of(memberService.signUp(req));
     }
 
-    /**
-     * POST /members/login — 로그인
-     */
+    @Operation(summary = "로그인")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그인 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "비밀번호 불일치"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않는 회원")
+    })
     @PostMapping("/login")
     public ApiResponse<Long> login(@Valid @RequestBody LoginReq req) {
         return ApiResponse.of(memberService.login(req));
     }
 
-    /**
-     * GET /members/{memberId} — 회원 단건 조회
-     */
+    @Operation(summary = "회원 단건 조회")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공")
     @GetMapping("/{memberId}")
-    public ApiResponse<MemberRes> getMember(@PathVariable Long memberId) {
+    public ApiResponse<MemberRes> getMember(
+            @Parameter(description = "회원 ID") @PathVariable Long memberId) {
         return ApiResponse.of(memberService.getMember(memberId));
     }
 }
+
