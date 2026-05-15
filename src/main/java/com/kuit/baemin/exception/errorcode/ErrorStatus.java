@@ -21,6 +21,11 @@ public enum ErrorStatus {
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "MEMBER401", "비밀번호가 일치하지 않습니다."),
 
     // ── TODO: 미션에서 필요한 에러 코드 추가 ──
+    // ── 가게 & 주문 관련 에러 추가 ──
+    RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "RESTAURANT404", "존재하지 않는 가게입니다."),
+    MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "MENU404", "존재하지 않는 메뉴입니다."),
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER404", "존재하지 않는 주문입니다."),
+    ORDER_CANNOT_CANCEL(HttpStatus.BAD_REQUEST, "ORDER400", "배달이 시작되어 취소할 수 없습니다.")
     ;
 
     private final HttpStatus httpStatus;
