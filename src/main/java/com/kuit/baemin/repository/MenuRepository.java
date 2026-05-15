@@ -10,5 +10,5 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     // 특정 식당의 메뉴 조회
-    List<Menu> findByRestaurantIdAndStatus(Long restaurant_id, MenuStatus status, Pageable pageable);
+    List<Menu> findByRestaurantIdAndStatus(Long restaurantId, MenuStatus status, Pageable pageable);
 }
