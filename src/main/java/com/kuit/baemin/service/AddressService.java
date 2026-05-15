@@ -1,22 +1,26 @@
 package com.kuit.baemin.service;
 
-import com.kuit.baemin.common.dto.ApiResponse;
 import com.kuit.baemin.domain.address.Address;
+import com.kuit.baemin.domain.address.AddressStatus;
+import com.kuit.baemin.domain.member.Member;
 import com.kuit.baemin.domain.member.MemberStatus;
 import com.kuit.baemin.domain.member_address.MemberAddress;
-import com.kuit.baemin.dto.request.AddressReq;
+import com.kuit.baemin.dto.response.AddressDelRes;
 import com.kuit.baemin.dto.response.AddressRes;
 import com.kuit.baemin.exception.AddressException;
 import com.kuit.baemin.exception.GeneralException;
+import com.kuit.baemin.exception.MemberException;
 import com.kuit.baemin.repository.AddressRepository;
 import com.kuit.baemin.repository.MemberAddressRepository;
 import com.kuit.baemin.repository.MemberRepository;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.kuit.baemin.exception.errorcode.ErrorStatus.ADDRESS_NOT_FOUND;
 import static com.kuit.baemin.exception.errorcode.ErrorStatus.FORBIDDEN;
+import static com.kuit.baemin.exception.errorcode.ErrorStatus.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -28,21 +32,52 @@ public class AddressService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long createAddress(Long memberId, AddressReq request) {
-        // 1. 회원 존재 확인 (야매 회원 검증)
-        var member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+    public Long createAddress(Long memberId, String name, String category) {
+        // 1. 회원 존재 여부 확인
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
         // 2. Address 엔티티 생성 및 저장
+        // 명세서에 위도/경도가 없으므로 임의의 값(0.0)과 기본 상태(ACTIVE 등)를 설정합니다.
         Address address = Address.builder()
-                .name(request.getName())
-                .status(MemberStatus.ACTIVE) // 아까 터졌던 status 예방용!
+                .name(name)
+                .latitude(127.0) // api를 통한 수정 필요
+                .longitude(37.7)
+                .status(AddressStatus.ACTIVE) // AddressStatus에 정의된 기본값 사용
                 .build();
+        addressRepository.save(address);
 
-        Address savedAddress = addressRepository.save(address);
+        // 3. MemberAddress 엔티티 생성 및 저장 (연관관계 매핑)
+        MemberAddress memberAddress = MemberAddress.builder()
+                .member(member)
+                .address(address)
+                .category(category)
+                .build();
+        memberAddressRepository.save(memberAddress);
 
-        // 3. 생성된 addressId 반환
-        return savedAddress.getId();
+        // 4. 명세서 요구사항에 따라 생성된 Address의 ID 반환
+        return address.getId();
+    }
+
+    @Transactional
+    public AddressDelRes deleteAddress(Long memberId, Long loginMemberId, Long addressId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+
+        if (!member.getId().equals(loginMemberId)) {
+            throw new GeneralException(FORBIDDEN);
+        }
+
+        MemberAddress memberAddress = memberAddressRepository.findByMemberIdAndAddressId(memberId, addressId)
+                .orElseThrow(() -> new AddressException(ADDRESS_NOT_FOUND));
+
+        memberAddressRepository.delete(memberAddress);
+
+        Address address = memberAddress.getAddress();
+        address.changeStatus(AddressStatus.INACTIVE);
+
+        // DTO에 담아서 반환
+        return new AddressDelRes(address.getId(), address.getStatus().name(), "주소가 정상적으로 삭제되었습니다.");
     }
 
     public AddressRes getAddress(Long addressId, Long loginMemberId) {

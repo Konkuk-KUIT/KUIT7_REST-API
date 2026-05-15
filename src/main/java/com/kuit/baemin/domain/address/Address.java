@@ -2,6 +2,7 @@ package com.kuit.baemin.domain.address;
 
 import com.kuit.baemin.domain.BaseEntity;
 import com.kuit.baemin.domain.member.MemberStatus;
+import com.kuit.baemin.service.AddressService;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,6 +41,9 @@ public class Address extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private MemberStatus status;
+    private AddressStatus status;
 
+    public void changeStatus(AddressStatus status) {
+        this.status = status;
+    }
 }

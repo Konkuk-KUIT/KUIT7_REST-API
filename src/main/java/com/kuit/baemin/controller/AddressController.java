@@ -1,7 +1,10 @@
 package com.kuit.baemin.controller;
 
 import com.kuit.baemin.common.dto.ApiResponse;
+import com.kuit.baemin.dto.request.AddressDelReq;
 import com.kuit.baemin.dto.request.AddressReq;
+import com.kuit.baemin.dto.request.OrderCancelReq;
+import com.kuit.baemin.dto.response.AddressDelRes;
 import com.kuit.baemin.dto.response.AddressRes;
 import com.kuit.baemin.dto.response.CouponRes;
 import com.kuit.baemin.dto.response.MemberRes;
@@ -9,6 +12,7 @@ import com.kuit.baemin.service.AddressService;
 import com.kuit.baemin.service.RestaurantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,14 +34,29 @@ public class AddressController {
 
     /**
      * POST /addresses — 주소 기록 및 반영
-     * 야매 인증을 위해 ?memberId=1 형태로 회원 ID를 같이 받습니다.
+     * 요구하신 대로 생성된 ID(Long)를 직접 반환합니다.
      */
     @PostMapping
     public ApiResponse<Long> createAddress(
-            @RequestParam Long memberId, // 로그인 대신 파라미터로 대충 회원 ID 받아버리기
             @Valid @RequestBody AddressReq request
     ) {
-        return ApiResponse.of(addressService.createAddress(memberId, request));
+        // 1. 서비스에서 저장 후 생성된 PK(ID)를 받아옵니다.
+        Long savedAddressId = addressService.createAddress(request.getMemberId(), request.getName(), request.getCategory());
+
+        // 2. 리뷰 작성 API와 동일하게 Long 값을 그대로 응답 객체에 담습니다.
+        return ApiResponse.of(savedAddressId);
+    }
+
+    /**
+     * DELETE /addresses/{memberId}/{addressId} — 주소 삭제
+     */
+    @DeleteMapping("/{memberId}/{addressId}")
+    public ApiResponse<AddressDelRes> deleteAddress(
+            @PathVariable Long memberId,
+            @Valid @RequestBody AddressDelReq request,
+            @PathVariable Long addressId
+    ) {
+        return ApiResponse.of(addressService.deleteAddress(memberId, request.getLoginMemberId(), addressId));
     }
 
     /**
@@ -45,8 +64,8 @@ public class AddressController {
      */
     @GetMapping("/{memberId}")
     public ApiResponse<AddressRes> getMyCoupons(
-            @RequestParam Long memberId,
-            @RequestHeader(value = "X-Login-Id", required = false) Long loginMemberId
+            @PathVariable Long memberId,
+            @RequestParam(value = "loginMemberId", required = false) Long loginMemberId
     ) {
         return ApiResponse.of(addressService.getAddress(memberId, loginMemberId));
     }

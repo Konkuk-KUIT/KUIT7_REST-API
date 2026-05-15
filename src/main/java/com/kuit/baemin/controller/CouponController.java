@@ -25,9 +25,9 @@ public class CouponController {
      * GET /coupons/{memberId} — 사용자의 쿠폰 목록 조회 (카테고리 필터링 포함)
      */
     @GetMapping("/{memberId}")
-    public ApiResponse<List<CouponRes>> getMyCoupons(
-            @RequestParam Long memberId,
-            @RequestHeader(value = "X-Login-Id", required = false) Long loginMemberId,
+    public ApiResponse<List<CouponRes>> getMyCoupons( // 인증, 인가 로직 전 야매 api
+            @PathVariable Long memberId,
+            @RequestParam(value = "loginMemberId", required = false) Long loginMemberId,
             @RequestParam(required = false) String category
     ) {
         return ApiResponse.of(couponService.getMyCoupons(memberId, loginMemberId, category));
