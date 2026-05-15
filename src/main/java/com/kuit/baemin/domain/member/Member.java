@@ -4,36 +4,42 @@ import com.kuit.baemin.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-// TODO: 본인이 설계한 ERD에 맞게 수정
 @Entity
 @Getter
 @Builder
-@Table(name = "members")
+@Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String email;
-
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 250)
     private String password;
 
-    @Column(nullable = false, length = 20)
-    private String phoneNumber;
-
-    @Column(length = 25)
+    @Column(nullable = false, length = 50)
     private String nickname;
 
-    @Column(length = 300)
+    @Column(length = 50)
+    private String primary_address;
+
+    @Column(name = "profile_image", length = 300)
     private String profileImage;
 
+    @Column(name= "primary_email", length = 255)
+    private String email;
+
+    @Column(name = "phone_number", nullable = false, length = 15)
+    private String phoneNumber;
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 50)
     private MemberStatus status;
+
+    @Column
+    private Long address_id;
 
 }
