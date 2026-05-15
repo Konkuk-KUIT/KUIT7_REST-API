@@ -10,12 +10,3 @@ public class OrderListRes {
     private List<OrderDetailRes> orders;
     private int currentPage;
 }
-
-@Getter
-@Builder
-class OrderDetailRes {
-    private Long orderId;
-    private String restaurantName;
-    private Long totalPrice;
-    private String status;
-}

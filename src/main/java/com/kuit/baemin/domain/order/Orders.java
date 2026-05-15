@@ -30,4 +30,9 @@ public class Orders extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
+
+    // 주문 상태 변경 메서드
+    public void changeStatus(String status) {
+        this.status = status;
+    }
 }
