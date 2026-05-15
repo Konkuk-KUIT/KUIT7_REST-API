@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import com.kuit.baemin.common.dto.ApiResponse;
 import com.kuit.baemin.exception.GeneralException;
 import com.kuit.baemin.exception.errorcode.ErrorStatus;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -37,6 +38,20 @@ public class GlobalExceptionHandler {
     /**
      * 커스텀 예외 GeneralException
      */
+    /**
+     * @Validated validation failure -> 400
+     */
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ApiResponse<?> handleConstraintViolation(ConstraintViolationException e) {
+        String message = e.getConstraintViolations()
+                .stream()
+                .map(violation -> violation.getMessage())
+                .collect(Collectors.joining(", "));
+        log.warn("[Validation error] {}", message);
+        return ApiResponse.onFailure(ErrorStatus.BAD_REQUEST.getCode(), message, null);
+    }
+
     @ExceptionHandler(GeneralException.class)
     public ApiResponse<?> handleGeneralException(GeneralException e) {
         ErrorStatus status = e.getErrorStatus();

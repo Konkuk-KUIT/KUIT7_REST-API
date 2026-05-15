@@ -4,9 +4,6 @@ import com.kuit.baemin.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // TODO: 본인이 설계한 ERD에 맞게 수정
 @Entity
 @Getter
@@ -25,6 +22,51 @@ public class Restaurant extends BaseEntity {
 
     @Column(nullable = false, length = 200)
     private String address;
+
+    @Column(nullable = false, length = 50)
+    private String category;
+
+    @Column(nullable = false)
+    private Integer type;
+
+    @Column(length = 500)
+    private String storePictureUrl;
+
+    @Column(nullable = false, length = 20)
+    private String phone;
+
+    @Column(nullable = false, length = 500)
+    private String content;
+
+    @Column(nullable = false)
+    private Integer minDeliveryPrice;
+
+    @Column(nullable = false)
+    private Integer deliveryTip;
+
+    @Column(nullable = false)
+    private Integer minDeliveryTime;
+
+    @Column(nullable = false)
+    private Integer maxDeliveryTime;
+
+    @Column(nullable = false)
+    private Double rating;
+
+    @Column(nullable = false)
+    private Integer reviewCount;
+
+    @Column(nullable = false)
+    private Integer dibsCount;
+
+    @Column(nullable = false, length = 50)
+    private String operationHours;
+
+    @Column(nullable = false, length = 100)
+    private String closedDays;
+
+    @Column(nullable = false, length = 200)
+    private String deliveryAddress;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
