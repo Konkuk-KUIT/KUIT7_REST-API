@@ -1,7 +1,6 @@
     package com.kuit.baemin.controller;
 
     import com.kuit.baemin.common.dto.ApiResponse;
-    import com.kuit.baemin.domain.Review.Review;
     import com.kuit.baemin.dto.request.ReviewReq;
     import com.kuit.baemin.service.ReviewService;
     import io.swagger.v3.oas.annotations.Operation;

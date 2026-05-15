@@ -6,12 +6,9 @@ import com.kuit.baemin.domain.Review.ReviewStatus;
 import com.kuit.baemin.domain.User.User;
 import com.kuit.baemin.dto.request.ReviewReq;
 import com.kuit.baemin.exception.OrderException;
-import com.kuit.baemin.exception.RestaurantException;
 import com.kuit.baemin.exception.ReviewException;
 import com.kuit.baemin.exception.UserException;
-import com.kuit.baemin.exception.errorcode.ErrorStatus;
 import com.kuit.baemin.repository.OrderRepository;
-import com.kuit.baemin.repository.RestaurantRepository;
 import com.kuit.baemin.repository.ReviewRepository;
 import com.kuit.baemin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +24,6 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
-    private final RestaurantRepository restaurantRepository;
     private final OrderRepository orderRepository;
 
     /**

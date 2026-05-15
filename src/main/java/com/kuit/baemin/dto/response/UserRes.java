@@ -1,11 +1,8 @@
 package com.kuit.baemin.dto.response;
 
 import com.kuit.baemin.domain.User.User;
-import com.kuit.baemin.domain.User.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder

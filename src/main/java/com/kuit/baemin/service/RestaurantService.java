@@ -1,6 +1,5 @@
 package com.kuit.baemin.service;
 
-import com.kuit.baemin.domain.Restaurant.Restaurant;
 import com.kuit.baemin.dto.response.RestaurantRes;
 import com.kuit.baemin.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;

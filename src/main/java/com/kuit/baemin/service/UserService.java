@@ -7,7 +7,6 @@ import com.kuit.baemin.dto.request.SignUpReq;
 import com.kuit.baemin.dto.request.UserUpdateReq;
 import com.kuit.baemin.dto.response.UserRes;
 import com.kuit.baemin.exception.UserException;
-import com.kuit.baemin.exception.errorcode.ErrorStatus;
 import com.kuit.baemin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

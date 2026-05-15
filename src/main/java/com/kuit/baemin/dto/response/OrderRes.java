@@ -1,7 +1,6 @@
 package com.kuit.baemin.dto.response;
 
 import com.kuit.baemin.domain.Order.Order;
-import com.kuit.baemin.domain.Order.OrderStatus;
 import com.kuit.baemin.domain.OrderMenu.OrderMenu;
 import lombok.Builder;
 import lombok.Getter;

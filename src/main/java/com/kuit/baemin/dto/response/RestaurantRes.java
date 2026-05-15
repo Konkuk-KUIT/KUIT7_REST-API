@@ -1,7 +1,6 @@
 package com.kuit.baemin.dto.response;
 
 import com.kuit.baemin.domain.Restaurant.Restaurant;
-import com.kuit.baemin.domain.Restaurant.RestaurantStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
