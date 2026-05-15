@@ -19,7 +19,7 @@ public class SignUpReq {
 
     @NotBlank(message = "전화번호는 필수입니다.")
     @Pattern(regexp = "^01[016789]-\\d{3,4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다. ex) 010-1234-5678")
-    private String phoneNumber;
+    private String phone;
 
     @Size(max = 25, message = "닉네임은 25자 이하여야 합니다.")
     private String nickname;

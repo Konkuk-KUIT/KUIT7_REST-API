@@ -3,6 +3,8 @@ package com.kuit.baemin.controller;
 import com.kuit.baemin.common.dto.ApiResponse;
 import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
+import com.kuit.baemin.dto.request.UpdateMemberReq;
+import com.kuit.baemin.dto.response.DeleteMemberRes;
 import com.kuit.baemin.dto.response.MemberRes;
 import com.kuit.baemin.service.MemberService;
 import jakarta.validation.Valid;
@@ -30,7 +32,7 @@ import org.springframework.web.bind.annotation.*;
  *  8주차 커리큘럼(인증, 인가, JWT)을 학습한 후 직접 추가해보세요!
  */
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -58,5 +60,19 @@ public class MemberController {
     @GetMapping("/{memberId}")
     public ApiResponse<MemberRes> getMember(@PathVariable Long memberId) {
         return ApiResponse.of(memberService.getMember(memberId));
+    }
+
+    @PatchMapping("/{userId}")
+    public ApiResponse<MemberRes> updateMember(
+            @PathVariable Long userId,
+            @Valid @RequestBody UpdateMemberReq req
+            ){
+        return ApiResponse.of(memberService.updateMember(userId, req));
+    }
+    @DeleteMapping("/{userId}")
+    public ApiResponse<DeleteMemberRes> deleteMember(
+            @PathVariable Long userId
+    ){
+        return ApiResponse.of(memberService.deleteMember(userId));
     }
 }
