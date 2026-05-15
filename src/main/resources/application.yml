@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: ${DATASOURCE_URL_LOCAL} #jdbc:mysql://localhost:3306/{본인이 저번주차에 생성했던 DB 이름}
-    username: ${DATASOURCE_USERNAME} # 본인 DB username 환경변수에 저장
-    password: ${DATASOURCE_PASSWORD} # 본인 DB 비밀번호 환경변수에 저장
+    url: jdbc:mysql://localhost:3306/baemin
+    username: root
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create   # 개발 중에는 create, 이후 validate로 변경
+      ddl-auto: validate   # 개발 중에는 create, 이후 validate로 변경
     show-sql: true
     properties:
       hibernate:

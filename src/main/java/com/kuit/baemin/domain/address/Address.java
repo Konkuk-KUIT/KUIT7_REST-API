@@ -1,13 +1,17 @@
-package com.kuit.baemin.domain.Restaurant;
+package com.kuit.baemin.domain.address;
 
 import com.kuit.baemin.domain.BaseEntity;
+import com.kuit.baemin.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
@@ -19,23 +23,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Builder
-@Table(name = "restaurant")
+@Table(name = "address")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Restaurant extends BaseEntity {
+public class Address extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String name;
-
-    @Column(length = 500)
-    private String description;
-
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String phoneNumber;
+    private AddressType addressType;
+
+    @Column(length = 50)
+    private String addressName;
 
     @Column(nullable = false, length = 100)
     private String roadAddress;
@@ -49,20 +51,14 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false, precision = 10, scale = 7)
     private BigDecimal longitude;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal minOrderAmount;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal deliveryFee;
-
-    @Column(length = 2000)
-    private String imageUrl;
+    @Column(nullable = false)
+    private Boolean isDefault;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private RestaurantStatus status;
+    private AddressStatus status;
 
-    public void delete() {
-        this.status = RestaurantStatus.deleted;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 }

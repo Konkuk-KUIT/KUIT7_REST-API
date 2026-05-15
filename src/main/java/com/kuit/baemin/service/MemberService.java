@@ -33,11 +33,11 @@ public class MemberService {
         }
 
         Member member = Member.builder()
+                .name(req.getName())
                 .email(req.getEmail())
                 .password(req.getPassword())
                 .phoneNumber(req.getPhoneNumber())
-                .nickname(req.getNickname())
-                .status(MemberStatus.ACTIVE)
+                .status(MemberStatus.active)
                 .build();
 
 
@@ -50,7 +50,7 @@ public class MemberService {
      */
     public Long login(LoginReq req) {
         Member member = memberRepository
-                .findByEmailAndStatus(req.getEmail(), MemberStatus.ACTIVE)
+                .findByEmailAndStatus(req.getEmail(), MemberStatus.active)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
         if (!member.getPassword().equals(req.getPassword())) {
