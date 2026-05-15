@@ -7,6 +7,8 @@ import com.kuit.baemin.domain.member.Member;
 import com.kuit.baemin.domain.member.MemberStatus;
 import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
+import com.kuit.baemin.dto.request.UpdateMemberReq;
+import com.kuit.baemin.dto.response.DeleteMemberRes;
 import com.kuit.baemin.dto.response.MemberRes;
 import com.kuit.baemin.exception.MemberException;
 import com.kuit.baemin.exception.errorcode.ErrorStatus;
@@ -35,7 +37,7 @@ public class MemberService {
         Member member = Member.builder()
                 .email(req.getEmail())
                 .password(req.getPassword())
-                .phoneNumber(req.getPhoneNumber())
+                .phone(req.getPhone())
                 .nickname(req.getNickname())
                 .status(MemberStatus.ACTIVE)
                 .build();
@@ -67,5 +69,28 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
         return MemberRes.from(member);
+    }
+
+    public MemberRes updateMember(Long userId, UpdateMemberReq req){
+        if(req.isEmpty()){
+            throw new MemberException(ErrorStatus.EMPTY_UPDATE_VALUE);
+        }
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+        member.updateInfo(
+                req.getName(),
+                req.getNickname(),
+                req.getPhone()
+        );
+        return MemberRes.from(member);
+    }
+    public DeleteMemberRes deleteMember(Long userId) {
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new MemberException(ErrorStatus.MEMBER_NOT_FOUND));
+        if (member.isDeleted()) {
+            throw new MemberException(ErrorStatus.MEMBER_ALREADY_DELETED);
+        }
+        member.delete();
+        return DeleteMemberRes.from(member);
     }
 }

@@ -13,9 +13,9 @@ public class MemberRes {
 
     private Long id;
     private String email;
-    private String phoneNumber;
+    private String phone;
     private String nickname;
-    private String profileImage;
+    private String name;
     private LocalDateTime createdAt;
 
     // 엔티티 → DTO 변환
@@ -23,9 +23,9 @@ public class MemberRes {
         return MemberRes.builder()
                 .id(member.getId())
                 .email(member.getEmail())
-                .phoneNumber(member.getPhoneNumber())
+                .phone(member.getPhone())
+                .name(member.getName())
                 .nickname(member.getNickname())
-                .profileImage(member.getProfileImage())
                 .createdAt(member.getCreatedAt())
                 .build();
     }
