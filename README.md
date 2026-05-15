@@ -31,13 +31,32 @@ CREATE DATABASE baemin DEFAULT CHARACTER SET utf8mb4;
 
 ---
 
-## 미션: 직접 구현할 API
+## 구현한 API 목록 (10개)
 
-6주차에 설계한 본인의 ERD를 기반으로 **10개** API를 자유롭게 설계하고 구현하세요.
-API 종류와 URI는 본인 ERD에 맞게 결정하면 됩니다.
-단, GET/POST/DELETE 등.. 다양하게 섞어서 구현해주세요
+| Method | URI                                       | 설명                        | 페이징 |
+|--------|-------------------------------------------|-----------------------------|--------|
+| POST   | /categories                               | 카테고리 등록               | -      |
+| GET    | /categories                               | 카테고리 목록 조회          | ✓      |
+| POST   | /restaurants                              | 가게 등록                   | -      |
+| GET    | /restaurants?categoryId=&page=&size=      | 가게 목록 조회 (카테고리 필터) | ✓      |
+| GET    | /restaurants/{restaurantId}               | 가게 상세 조회              | -      |
+| POST   | /restaurants/{restaurantId}/menus         | 메뉴 등록                   | -      |
+| GET    | /restaurants/{restaurantId}/menus         | 가게 메뉴 목록 조회         | ✓      |
+| POST   | /orders                                   | 주문 생성                   | -      |
+| GET    | /members/{memberId}/orders                | 회원 주문 목록 조회         | ✓      |
+| DELETE | /orders/{orderId}?memberId=               | 주문 취소 (soft delete)     | -      |
 
-> 조회 API의 경우 페이징 처리를 적용하여 API 성능을 개선해보세요! (선택)
+### 적용한 체크리스트
+- 모든 연관관계 `FetchType.LAZY`
+- Request/Response DTO 분리 (`dto/request`, `dto/response`)
+- `@Valid` 입력값 검증 + `GlobalExceptionHandler`로 400 응답 매핑
+- 클래스 단위 `@Transactional(readOnly = true)`, 변경이 있는 메서드만 `@Transactional`
+- 페이징은 Spring Data `Pageable` + 응답 래퍼 `PageRes<T>` 사용
+
+### 기타 특이사항
+- `Order`의 진행 상태(`orderStatus`)와 soft-delete 플래그(`status`)를 분리. 취소는 `PLACED` 상태에서만 허용.
+- 주문 생성 시 메뉴 가격을 `priceAtOrder`에 스냅샷 저장 → 이후 메뉴 가격 변경에 영향 받지 않음.
+- 인증/인가는 8주차 범위라 `DELETE /orders/{orderId}`는 `memberId`를 RequestParam으로 받아 소유자 검증.
 
 ---
 
