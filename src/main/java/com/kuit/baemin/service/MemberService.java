@@ -6,7 +6,9 @@ import static com.kuit.baemin.exception.errorcode.ErrorStatus.MEMBER_NOT_FOUND;
 import com.kuit.baemin.domain.member.Member;
 import com.kuit.baemin.domain.member.MemberStatus;
 import com.kuit.baemin.dto.request.LoginReq;
+import com.kuit.baemin.dto.request.MemberUpdateReq;
 import com.kuit.baemin.dto.request.SignUpReq;
+import com.kuit.baemin.dto.response.DeleteMemberRes;
 import com.kuit.baemin.dto.response.MemberRes;
 import com.kuit.baemin.exception.MemberException;
 import com.kuit.baemin.exception.errorcode.ErrorStatus;
@@ -17,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -36,7 +37,7 @@ public class MemberService {
                 .email(req.getEmail())
                 .password(req.getPassword())
                 .phoneNumber(req.getPhoneNumber())
-                .nickname(req.getNickname())
+                .userName(req.getUserName())
                 .status(MemberStatus.ACTIVE)
                 .build();
 
@@ -68,4 +69,41 @@ public class MemberService {
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
         return MemberRes.from(member);
     }
+
+    @Transactional
+    public Long updateMember(Long memberId, MemberUpdateReq req){
+        Member member = memberRepository.findById(memberId)
+                                        .orElseThrow(() -> new MemberException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        if (req.getPhoneNumber() != null){
+            boolean isDuplicate = memberRepository.existsByPhoneNumber(req.getPhoneNumber());
+            if (isDuplicate){
+                throw new MemberException(ErrorStatus.DUPLICATE_PHONE_NUMBER);
+            }
+        }
+
+        member.updateProfile(req.getUserName() , req.getPhoneNumber());
+
+        return member.getId();
+
+    }
+
+    @Transactional
+    public DeleteMemberRes deleteMember(Long memberId){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+
+        if (MemberStatus.DELETED.equals(member.getStatus())) {
+            throw new MemberException(ErrorStatus.ALREADY_DELETED_MEMBER); // "이미 탈퇴한 회원입니다."
+        }
+
+        member.withdraw();
+
+        return DeleteMemberRes.builder()
+                .memberId(member.getId())
+                .build();
+
+    }
+
+
 }
