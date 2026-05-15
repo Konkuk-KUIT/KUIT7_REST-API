@@ -1,4 +1,4 @@
-package com.kuit.baemin.domain.Restaurant;
+package com.kuit.baemin.domain.restaurant;
 
 public enum RestaurantStatus {
     ACTIVE,
