@@ -1,7 +1,5 @@
 package com.kuit.baemin.exception.handler;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 import com.kuit.baemin.common.dto.ApiResponse;
 import com.kuit.baemin.exception.GeneralException;
 import com.kuit.baemin.exception.errorcode.ErrorStatus;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Slf4j
 @RestControllerAdvice

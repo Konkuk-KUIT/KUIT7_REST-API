@@ -2,9 +2,9 @@ package com.kuit.baemin.exception;
 
 import com.kuit.baemin.exception.errorcode.ErrorStatus;
 
-public class MemberException extends GeneralException {
+public class StoreException extends GeneralException {
 
-  public MemberException(ErrorStatus errorStatus) {
+  public StoreException(ErrorStatus errorStatus) {
     super(errorStatus);
   }
 }

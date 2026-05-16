@@ -1,7 +1,7 @@
 package com.kuit.baemin.repository;
 
-import com.kuit.baemin.domain.member.Member;
-import com.kuit.baemin.domain.member.MemberStatus;
+import com.kuit.baemin.domain.Member;
+import com.kuit.baemin.domain.MemberStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
