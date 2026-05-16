@@ -3,8 +3,8 @@ package com.kuit.baemin.controller;
 import com.kuit.baemin.common.dto.ApiResponse;
 import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
-import com.kuit.baemin.dto.response.MemberRes;
-import com.kuit.baemin.service.MemberService;
+import com.kuit.baemin.dto.response.UserRes;
+import com.kuit.baemin.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,33 +30,46 @@ import org.springframework.web.bind.annotation.*;
  *  8주차 커리큘럼(인증, 인가, JWT)을 학습한 후 직접 추가해보세요!
  */
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/users")
 @RequiredArgsConstructor
-public class MemberController {
+public class UserController {
 
-    private final MemberService memberService;
+    private final UserService userService;
 
     /**
-     * POST /members — 회원 가입
+     * POST /users — 회원 가입
      */
     @PostMapping
     public ApiResponse<Long> signUp(@Valid @RequestBody SignUpReq req) {
-        return ApiResponse.of(memberService.signUp(req));
+        return ApiResponse.of(userService.signUp(req));
     }
 
     /**
-     * POST /members/login — 로그인
+     * POST /users/login — 로그인
      */
     @PostMapping("/login")
     public ApiResponse<Long> login(@Valid @RequestBody LoginReq req) {
-        return ApiResponse.of(memberService.login(req));
+        return ApiResponse.of(userService.login(req));
     }
 
     /**
-     * GET /members/{memberId} — 회원 단건 조회
+     * GET /users/{memberId} — 회원 단건 조회
      */
     @GetMapping("/{memberId}")
-    public ApiResponse<MemberRes> getMember(@PathVariable Long memberId) {
-        return ApiResponse.of(memberService.getMember(memberId));
+    public ApiResponse<UserRes> getMember(@PathVariable Long memberId) {
+        return ApiResponse.of(userService.getMember(memberId));
+    }
+
+    /**
+     * DELETE /users/{userId} — 회원 탈퇴
+     */
+    @DeleteMapping("/{userId}")
+    public ApiResponse<Void> deleteUser(
+            @PathVariable Long userId
+    ) {
+
+        userService.deleteUser(userId);
+
+        return ApiResponse.of(null);
     }
 }
