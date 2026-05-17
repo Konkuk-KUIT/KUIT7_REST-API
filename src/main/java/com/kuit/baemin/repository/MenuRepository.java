@@ -1,0 +1,13 @@
+package com.kuit.baemin.repository;
+
+import com.kuit.baemin.domain.menu.Menu;
+import com.kuit.baemin.domain.menu.MenuStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface MenuRepository extends JpaRepository<Menu, Long> {
+    List<Menu> findByStoreIdAndStatus(Long storeId, MenuStatus status);
+}
