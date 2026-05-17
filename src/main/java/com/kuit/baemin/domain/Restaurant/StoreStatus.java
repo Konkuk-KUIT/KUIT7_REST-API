@@ -1,7 +1,7 @@
 package com.kuit.baemin.domain.Restaurant;
 
-public enum RestaurantStatus {
+public enum StoreStatus {
     ACTIVE,
-    CLOSED,
+    INACTIVE,
     DELETED
 }
