@@ -20,8 +20,13 @@ public enum ErrorStatus {
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "MEMBER409", "이미 사용 중인 이메일입니다."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "MEMBER401", "비밀번호가 일치하지 않습니다."),
 
-    // ── TODO: 미션에서 필요한 에러 코드 추가 ──
-    ;
+    // ── 식당 ──
+    RESTAURNAT_NOT_FOUND(HttpStatus.NOT_FOUND, "RESTAURANT404", "존재하지 않는 식당입니다."),
+    DUPLICATE_STORE_NAME(HttpStatus.CONFLICT, "RESTAURANT409", "이미 사용 중인 가게명입니다."),
+
+    // ── 찜 ──
+    STEAMED_NOT_FOUND(HttpStatus.NOT_FOUND, "STEAMED404", "존재하지 않는 찜입니다."),
+    DUPLICATE_STEAMED(HttpStatus.CONFLICT, "STEAMED409", "이미 찜한 가게입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

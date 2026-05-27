@@ -4,10 +4,16 @@ import com.kuit.baemin.common.dto.ApiResponse;
 import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
 import com.kuit.baemin.dto.response.MemberRes;
+import com.kuit.baemin.dto.response.PageRes;
 import com.kuit.baemin.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.GetExchange;
+
+import java.util.List;
 
 /**
  * TODO: 인증/인가 처리 미구현 (8주차에서 다룰 예정)
@@ -53,10 +59,28 @@ public class MemberController {
     }
 
     /**
-     * GET /members/{memberId} — 회원 단건 조회
+     * GET /members/{memberId} — 회원 단일 조회
      */
     @GetMapping("/{memberId}")
     public ApiResponse<MemberRes> getMember(@PathVariable Long memberId) {
         return ApiResponse.of(memberService.getMember(memberId));
     }
+
+    /**
+     * GET /members - 회원 전체 조회
+     */
+    @GetMapping
+    public ApiResponse<PageRes<MemberRes>> getAllMembers(Pageable pageable) {
+        return ApiResponse.of(memberService.getAllMember(pageable));
+    }
+
+    /**
+     * DELETE /members/{memberId} - 회원 삭제
+     */
+
+    @DeleteMapping("/{memberId}")
+    public ApiResponse<Long> deleteMember(@PathVariable Long memberId) {
+        return ApiResponse.of(memberService.deleteMember(memberId));
+    }
+
 }

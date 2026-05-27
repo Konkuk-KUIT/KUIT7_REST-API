@@ -8,12 +8,17 @@ import com.kuit.baemin.domain.member.MemberStatus;
 import com.kuit.baemin.dto.request.LoginReq;
 import com.kuit.baemin.dto.request.SignUpReq;
 import com.kuit.baemin.dto.response.MemberRes;
+import com.kuit.baemin.dto.response.PageRes;
 import com.kuit.baemin.exception.MemberException;
 import com.kuit.baemin.exception.errorcode.ErrorStatus;
 import com.kuit.baemin.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,9 +54,7 @@ public class MemberService {
      * 로그인
      */
     public Long login(LoginReq req) {
-        Member member = memberRepository
-                .findByEmailAndStatus(req.getEmail(), MemberStatus.ACTIVE)
-                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+        Member member = findMemberByEmail(req.getEmail());
 
         if (!member.getPassword().equals(req.getPassword())) {
             throw new MemberException(INVALID_PASSWORD);
@@ -64,8 +67,35 @@ public class MemberService {
      * 회원 단건 조회
      */
     public MemberRes getMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+        Member member = findMemberById(memberId);
         return MemberRes.from(member);
+    }
+
+    @Transactional
+    public Long deleteMember(Long memberId) {
+        if(!memberRepository.existsById(memberId)) {
+            throw new MemberException(MEMBER_NOT_FOUND);
+        }
+
+        memberRepository.deleteById(memberId);
+        return memberId;
+    }
+
+    public PageRes<MemberRes> getAllMember(Pageable pageable) {
+        Page<Member> memberPage = memberRepository.findAll(pageable);
+
+         Page<MemberRes> memberResPage = memberPage.map(MemberRes::from);
+
+        return PageRes.from(memberResPage);
+    }
+
+    public Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+    }
+
+    private Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
     }
 }
